@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: proj-deploy
+  labels:
+    app: proj-deploy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: proj-deploy
+  template:
+    metadata:
+      labels:
+        app: proj-deploy
+    spec:
+      containers:
+        - name: mysite
+          image: shrewdrowny/djangoapp:v1
+          ports:
+            - containerPort: 8000
+          volumeMounts:
+            - name: nfs-share
+              mountPath: /usr/src/app/media
+      volumes:
+        - name: nfs-share
+          persistentVolumeClaim:
+            claimName: proj-pvc-nfs

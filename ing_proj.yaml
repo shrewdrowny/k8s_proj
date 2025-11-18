@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ing-proj
+spec:
+  defaultBackend:
+    service:
+      name: proj-svc-np
+      port:
+        number: 80
+  rules:
+    - host: proj.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Exact
+            backend:
+              service:
+                name: proj-svc-np
+                port:
+                  number: 80
