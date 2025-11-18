@@ -60,11 +60,49 @@ pipeline {
                 }
             }
         }
+	stage('Update ArgoCD Git Repo') {
+            steps {
+                script {
+                    // 1) git 사용자 정보 설정 (로컬 repo 기준)
+                    sh '''
+                      git config user.email "soyongjun00@gmail.com"
+                      git config user.name "shrewdrowny"
+                    '''
+
+                    // 2) deployment.yaml의 image 태그를 새 IMAGE_TAG로 교체
+                    sh """
+                      sed -i 's|image: shrewdrowny/djangoapp:.*|image: ${IMAGE_TAG}|' k8s/deploy.yaml
+                    """
+
+                    // 3) 변경된 파일 git add + commit
+                    sh '''
+                      git add k8s/deploy.yaml
+                      git commit -m "CI: Update djangoapp image tag [skip ci]" || echo "No changes to commit"
+                    '''
+
+                    // 4) Jenkins Credentials로 Git push
+                    //    -> username/password 타입 Credentials 예시
+                    withCredentials([
+                        usernamePassword(
+                            credentialsId: 'dockerhub',
+                            usernameVariable: 'GIT_USERNAME',
+                            passwordVariable: 'GIT_AUTH_TOKEN'
+                        )
+                    ]) {
+                        sh '''
+                          git push https://$GIT_USERNAME:$GIT_AUTH_TOKEN@github.com/shrewdrowny/k8s_proj.git HEAD:main
+                        '''
+                    }
+
+                    echo "Git Repository에 이미지 태그 업데이트 및 푸시 완료. 이제 ArgoCD가 변경을 감지해서 배포를 진행합니다."
+                }
+            }
+        }
     }
 
     post {
         success {
-            echo "성공적으로 Docker Hub에 push 완료!"
+            echo "성공적으로 Docker Hub에 push 및 ArgoCD로 배포 완료!"
         }
         failure {
             echo "빌드 실패! 로그를 확인하세요."
