@@ -26,3 +26,5 @@ spec:
         - name: nfs-share
           persistentVolumeClaim:
             claimName: proj-pvc-nfs
+      imagePullSecrets:
+        - name: dockerhub-secret
