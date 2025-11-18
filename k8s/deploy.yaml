@@ -16,15 +16,8 @@ spec:
     spec:
       containers:
         - name: mysite
-          image: shrewdrowny/djangoapp:v10
+          image: shrewdrowny/djangoapp:v8
           ports:
             - containerPort: 8000
-          volumeMounts:
-            - name: nfs-share
-              mountPath: /usr/src/app/media
-      volumes:
-        - name: nfs-share
-          persistentVolumeClaim:
-            claimName: proj-pvc-nfs
       imagePullSecrets:
         - name: dockerhub-secret

@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: proj-pvc-nfs
+  name: mysql-pvc-nfs
 spec:
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: 1Gi
-  volumeName: proj-pv-nfs
+      storage: 2Gi
+  volumeName: mysql-pv-nfs
   storageClassName: ''

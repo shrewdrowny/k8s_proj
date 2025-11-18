@@ -14,6 +14,9 @@ RUN apt-get update && apt-get install -y \
 COPY mysite/requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
+# 4-1. MySQL 연동을 위한 파이썬 패키지 설치
+RUN pip install --no-cache-dir mysqlclient
+
 # 5. Django 애플리케이션 소스 복사
 COPY . /app/
 
@@ -25,9 +28,9 @@ ENV PYTHONUNBUFFERED 1
 
 # 8. 마이그레이션 및 정적 파일 수집
 WORKDIR /app/mysite
-RUN python manage.py makemigrations
-RUN python manage.py migrate
-RUN python manage.py collectstatic --noinput
+# RUN python manage.py makemigrations
+# RUN python manage.py migrate
+RUN python manage.py collectstatic --noinput || true
 
 # 9. 애플리케이션 실행
 CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
