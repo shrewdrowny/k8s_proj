@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: mysite
-          image: shrewdrowny/djangoapp:v6
+          image: shrewdrowny/djangoapp:v7
           ports:
             - containerPort: 8000
           volumeMounts:
