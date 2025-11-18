@@ -84,7 +84,7 @@ pipeline {
                     //    -> username/password 타입 Credentials 예시
                     withCredentials([
                         usernamePassword(
-                            credentialsId: 'dockerhub',
+                            credentialsId: 'github',
                             usernameVariable: 'GIT_USERNAME',
                             passwordVariable: 'GIT_AUTH_TOKEN'
                         )
