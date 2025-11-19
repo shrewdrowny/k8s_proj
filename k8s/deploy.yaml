@@ -9,6 +9,7 @@ spec:
   selector:
     matchLabels:
       app: proj-deploy
+  revisionHistoryLimit: 2
   template:
     metadata:
       labels:
