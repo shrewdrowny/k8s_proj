@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: mysite
-          image: shrewdrowny/djangoapp:v18
+          image: shrewdrowny/djangoapp:v19
           ports:
             - containerPort: 8000
       imagePullSecrets:
